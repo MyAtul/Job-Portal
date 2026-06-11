@@ -1,6 +1,7 @@
 package com.example.Job_portal.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Jobs {
@@ -9,14 +10,26 @@ public class Jobs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Title is Required")
     private String title;
+
+    @NotBlank(message = "Company Name Can't be empty")
     private String company;
+
+    @NotBlank(message = "Skills Can't be empty")
     private String skills;
+
+    @NotBlank(message = "Location field Can't be empty")
     private String location;
+
+    @NotBlank(message = "Salary Can't be empty")
     private String salary;
+
+    @NotBlank(message = "Image Can't be empty")
     private  String imgUrl;
 
     @Column(length = 2000)
+    @NotBlank(message = "Description Can't be empty")
     private String description;
 
     public String getTitle() {

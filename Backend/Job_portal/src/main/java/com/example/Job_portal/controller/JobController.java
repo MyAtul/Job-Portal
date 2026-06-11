@@ -2,6 +2,7 @@ package com.example.Job_portal.controller;
 
 import com.example.Job_portal.model.Jobs;
 import com.example.Job_portal.service.JobService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class JobController {
     JobService jobService;
 
     @PostMapping("/jobs")
-    private Jobs addJob(@RequestBody Jobs job){
+    private Jobs addJob(@Valid @RequestBody Jobs job){
         return jobService.addJob(job);
     }
 
@@ -26,7 +27,7 @@ public class JobController {
     }
 
     @PutMapping("/jobs/{id}")
-    private Jobs updateJob(@PathVariable Integer id,@RequestBody Jobs job){
+    private Jobs updateJob(@PathVariable Integer id,@Valid @RequestBody Jobs job){
         return jobService.updateJob(id,job);
     }
 
