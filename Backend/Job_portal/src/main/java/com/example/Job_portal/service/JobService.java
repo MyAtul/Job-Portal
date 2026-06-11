@@ -1,5 +1,6 @@
 package com.example.Job_portal.service;
 
+import com.example.Job_portal.exception.JobNotFoundException;
 import com.example.Job_portal.model.Jobs;
 import com.example.Job_portal.repository.JobRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,12 @@ public class JobService {
     }
 
     public Jobs updateJob(Integer id, Jobs job) {
-        Jobs existingJob = repo.findById(id).orElse(null);
+        Jobs existingJob = repo.findById(id)
+                .orElseThrow(()->
+                new JobNotFoundException(
+                        "Job with id " + id + " not found"
+                ));
+
         if(existingJob != null){
             existingJob.setTitle(job.getTitle());
             existingJob.setCompany(job.getCompany());
@@ -39,12 +45,19 @@ public class JobService {
     }
 
     public String deleteJob(Integer id) {
-        repo.deleteById(id);
+        Jobs job = repo.findById(id)
+                        .orElseThrow(()->
+                        new JobNotFoundException(
+                                "Job with id " + id + " not found"
+                        ));
+        repo.delete(job);
         return "Successfully Deleted";
     }
 
     public Optional<Jobs> getJobById(Integer id) {
-        return repo.findById(id);
+        return Optional.ofNullable(repo.findById(id).orElseThrow(() ->
+                new JobNotFoundException("Job with id " + id + " not found")
+        ));
     }
 
     public List<Jobs> findByTitle(String keyword) {
