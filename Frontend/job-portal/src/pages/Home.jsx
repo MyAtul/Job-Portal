@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { deleteJob, getJobs } from '../services/services'
+import { deleteJob, getJobs, searchJobs } from '../services/services'
 import Card from '../components/Card'
 
-const Home = () => {
+const Home = ({keyword,setSuggestions}) => {
 
   const [jobs, setJobs] = useState([])
+  
+  const loadJob = async ()=>{
+    const response =await getJobs()
+    setJobs(response.data)
+  }
 
   const handleDelete =async (id) =>{
 
@@ -16,14 +21,34 @@ const Home = () => {
     loadJob()
   }
 
-  useEffect(()=>{
-    loadJob()
-  },[])
+  const searchJob = async () =>{
 
-  const loadJob = async ()=>{
-    const response =await getJobs()
-    setJobs(response.data)
+    if(keyword.trim() === ''){
+      loadJob()
+      return
+    }
+    else{
+      const response = await searchJobs(keyword)
+      setJobs(response.data)
+      setSuggestions(response.data)
+    }
+    
   }
+  
+  useEffect(()=>{
+
+    const timer = setTimeout(()=>{
+        if(keyword.trim() === ''){
+        loadJob()
+      }
+      else{
+        searchJob()
+      }
+    },500)
+
+    return()=>clearTimeout(timer)
+  },[keyword])
+
 
   return (
     <div className='flex flex-wrap'>

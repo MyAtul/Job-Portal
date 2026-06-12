@@ -21,3 +21,7 @@ export const deleteJob = (id) =>{
 export const getJobById = (id) =>{
     return axios.get(`${API_URL}/jobs/${id}`)
 }
+
+export const searchJobs = (keyword) =>{
+    return axios.get(`${API_URL}/jobs/search?keyword=${keyword}`)
+}
