@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { addJob, getJobById, updateJob } from '../services/services'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const JobForm = () => {
 
@@ -49,11 +50,13 @@ const JobForm = () => {
 
         if(id){
             await updateJob(id,job)
+            toast.success("Job Details Updated")
             navigate("/")
         }
 
         else{
             await addJob(job)
+            toast.success("New Job Added")
             navigate("/")
         }
 

@@ -5,6 +5,8 @@ import { Routes,Route } from "react-router-dom";
 import Edit from './pages/Edit';
 import Navbar from './components/Navbar';
 import AddJob from './pages/AddJob';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
 
@@ -25,6 +27,12 @@ const App = () => {
         <Route path='/addJob' element={<AddJob />}/>
         <Route path='/editJob/:id' element={<Edit />}/>
       </Routes>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+      />
+
     </div>
   )
 }

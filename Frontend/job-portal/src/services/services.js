@@ -25,3 +25,7 @@ export const getJobById = (id) =>{
 export const searchJobs = (keyword) =>{
     return axios.get(`${API_URL}/jobs/search?keyword=${keyword}`)
 }
+
+export const getJobByPage = (page,size) =>{
+    return axios.get(`${API_URL}/jobs/page?page=${page}&size=${size}`)
+}
