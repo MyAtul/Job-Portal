@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import AddJob from './pages/AddJob';
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import JobDetails from './pages/JobDetails';
 
 const App = () => {
 
@@ -26,6 +27,7 @@ const App = () => {
         <Route path='/editJob' element={<Edit />}/>
         <Route path='/addJob' element={<AddJob />}/>
         <Route path='/editJob/:id' element={<Edit />}/>
+        <Route path='jobdetail/:id' element={<JobDetails />}/>
       </Routes>
 
       <ToastContainer

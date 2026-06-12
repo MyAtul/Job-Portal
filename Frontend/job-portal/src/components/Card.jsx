@@ -50,11 +50,12 @@ const Card = ({ job ,handleDelete }) => {
 
             <div className='flex gap-2'>
   
-              <button
+              <Link
+                to={`/jobdetail/${job.id}`}
                 className='bg-black text-white rounded-xl py-2 px-3 hover:bg-gray-800 transition'
               >
                 Apply
-              </button>
+              </Link>
 
               <Link
                 to={`/editJob/${job.id}`}
