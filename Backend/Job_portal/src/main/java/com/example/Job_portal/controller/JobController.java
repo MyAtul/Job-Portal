@@ -3,7 +3,6 @@ package com.example.Job_portal.controller;
 import com.example.Job_portal.model.Jobs;
 import com.example.Job_portal.service.JobService;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +38,7 @@ public class JobController {
     }
 
     @GetMapping("/jobs/{id}")
-    public Optional<Jobs> getJob(@PathVariable Integer id){
+    public Jobs getJob(@PathVariable Integer id){
         return jobService.getJobById(id);
     }
 
@@ -51,5 +50,25 @@ public class JobController {
     @GetMapping("/jobs/page")
     public Page<Jobs> getJobWithPagination(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
         return jobService.getJobWithPagination(page,size);
+    }
+
+    @GetMapping("/jobs/location")
+    public List<Jobs> filterJobByLocation(@RequestParam String location){
+        return jobService.findByLocation(location);
+    }
+
+    @GetMapping("/jobs/skill")
+    public List<Jobs> filterJobBySkill(@RequestParam String skill){
+        return jobService.findBySkill(skill);
+    }
+
+    @GetMapping("/jobs/salary")
+    public List<Jobs> filterJobBySalary(@RequestParam String salary){
+        return jobService.findBySalary(salary);
+    }
+
+    @GetMapping("/jobs/company")
+    public List<Jobs> filterJobByCompany(@RequestParam String company){
+        return jobService.findByCompany(company);
     }
 }

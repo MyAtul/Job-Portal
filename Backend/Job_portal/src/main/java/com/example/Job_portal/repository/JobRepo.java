@@ -9,5 +9,9 @@ import java.util.List;
 @Repository
 public interface JobRepo extends JpaRepository<Jobs,Integer> {
     List<Jobs> findByTitleContainingIgnoreCase(String keyword);
+    List<Jobs> findByLocationContainingIgnoreCase(String location);
+    List<Jobs> findBySkillsContainingIgnoreCase(String skills);
+    List<Jobs> findBySalaryContainingIgnoreCase(String salary);
+    List<Jobs> findByCompanyContainingIgnoreCase(String company);
 
 }

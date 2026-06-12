@@ -59,8 +59,8 @@ public class JobService {
         return "Successfully Deleted";
     }
 
-    public Optional<Jobs> getJobById(Integer id) {
-        return Optional.ofNullable(repo.findById(id).orElseThrow(() ->
+    public Jobs getJobById(Integer id) {
+        return (repo.findById(id).orElseThrow(() ->
                 new JobNotFoundException("Job with id " + id + " not found")
         ));
     }
@@ -72,5 +72,21 @@ public class JobService {
     public Page<Jobs> getJobWithPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repo.findAll(pageable);
+    }
+
+    public List<Jobs> findByLocation(String location) {
+        return repo.findByLocationContainingIgnoreCase(location);
+    }
+
+    public List<Jobs> findBySkill(String skill) {
+        return repo.findBySkillsContainingIgnoreCase(skill);
+    }
+
+    public List<Jobs> findBySalary(String salary) {
+        return repo.findBySalaryContainingIgnoreCase(salary);
+    }
+
+    public List<Jobs> findByCompany(String company) {
+        return repo.findByCompanyContainingIgnoreCase(company);
     }
 }
