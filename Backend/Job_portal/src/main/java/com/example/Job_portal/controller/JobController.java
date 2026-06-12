@@ -3,7 +3,9 @@ package com.example.Job_portal.controller;
 import com.example.Job_portal.model.Jobs;
 import com.example.Job_portal.service.JobService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,32 +19,37 @@ public class JobController {
     JobService jobService;
 
     @PostMapping("/jobs")
-    private Jobs addJob(@Valid @RequestBody Jobs job){
+    public Jobs addJob(@Valid @RequestBody Jobs job){
         return jobService.addJob(job);
     }
 
     @GetMapping("/jobs")
-    private List<Jobs> getJob(){
+    public List<Jobs> getJob(){
         return jobService.getJobs();
     }
 
     @PutMapping("/jobs/{id}")
-    private Jobs updateJob(@PathVariable Integer id,@Valid @RequestBody Jobs job){
+    public Jobs updateJob(@PathVariable Integer id,@Valid @RequestBody Jobs job){
         return jobService.updateJob(id,job);
     }
 
     @DeleteMapping("/jobs/{id}")
-    private String deleteJob(@PathVariable Integer id){
+    public String deleteJob(@PathVariable Integer id){
         return jobService.deleteJob(id);
     }
 
     @GetMapping("/jobs/{id}")
-    private Optional<Jobs> getJob(@PathVariable Integer id){
+    public Optional<Jobs> getJob(@PathVariable Integer id){
         return jobService.getJobById(id);
     }
 
     @GetMapping("/jobs/search")
-    private List<Jobs> getJobByTitle(@RequestParam String keyword){
+    public List<Jobs> getJobByTitle(@RequestParam String keyword){
         return jobService.findByTitle(keyword);
+    }
+
+    @GetMapping("/jobs/page")
+    public Page<Jobs> getJobWithPagination(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
+        return jobService.getJobWithPagination(page,size);
     }
 }
