@@ -103,7 +103,7 @@ const FilterBar = ({
           setCompany('')
           setSkill('')
           setSalary('')
-          sortBy('id')
+          setSortBy('id')
         }}
         className="bg-amber-400 p-1 font-semibold rounded hover:bg-amber-300">Reset Filter</button>
       </div>
