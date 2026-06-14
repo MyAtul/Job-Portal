@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { addJob, getJobById, updateJob } from '../services/services'
-import { useNavigate, useParams } from 'react-router-dom'
+import { data, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const JobForm = () => {
@@ -38,12 +38,13 @@ const JobForm = () => {
     const handleSubmit =async (event)=>{
         event.preventDefault()
 
-        const job ={
+        try{
+          const job ={
             title,
             company,
             skills,
             location,
-            salary,
+            salary:Number(salary),
             imgUrl,
             description
         }
@@ -59,6 +60,12 @@ const JobForm = () => {
             toast.success("New Job Added")
             navigate("/")
         }
+        }catch(error){
+          console.log(error)
+          console.log(error.response?.data)
+          toast.error("something is wrong")
+        }
+        
 
     }
 
@@ -148,7 +155,7 @@ const JobForm = () => {
                     setSalary(elem.target.value)
                 }}
                 value={salary}
-                type='text'
+                type='number'
                 placeholder='12 LPA'
                 className='w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-black'
               />

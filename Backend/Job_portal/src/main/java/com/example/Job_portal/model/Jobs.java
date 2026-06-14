@@ -1,7 +1,9 @@
 package com.example.Job_portal.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Jobs {
@@ -22,8 +24,9 @@ public class Jobs {
     @NotBlank(message = "Location field Can't be empty")
     private String location;
 
-    @NotBlank(message = "Salary Can't be empty")
-    private String salary;
+    @NotNull(message = "Salary can't be empty")
+    @Min(value = 1,message = "Salary can't be 0")
+    private Integer salary;
 
     @NotBlank(message = "Image Can't be empty")
     private  String imgUrl;
@@ -88,11 +91,11 @@ public class Jobs {
         this.description = description;
     }
 
-    public String getSalary() {
+    public Integer getSalary() {
         return salary;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(Integer salary) {
         this.salary = salary;
     }
 

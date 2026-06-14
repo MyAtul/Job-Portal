@@ -6,9 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:5173/")
 @RestController
@@ -48,8 +46,11 @@ public class JobController {
     }
 
     @GetMapping("/jobs/page")
-    public Page<Jobs> getJobWithPagination(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
-        return jobService.getJobWithPagination(page,size);
+    public Page<Jobs> getJobWithPagination(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "5") int size,
+                                           @RequestParam(defaultValue = "id") String sortBy)
+    {
+        return jobService.getJobWithPagination(page,size,sortBy);
     }
 
     @GetMapping("/jobs/location")
@@ -63,7 +64,7 @@ public class JobController {
     }
 
     @GetMapping("/jobs/salary")
-    public List<Jobs> filterJobBySalary(@RequestParam String salary){
+    public List<Jobs> filterJobBySalary(@RequestParam Integer salary){
         return jobService.findBySalary(salary);
     }
 
@@ -71,4 +72,59 @@ public class JobController {
     public List<Jobs> filterJobByCompany(@RequestParam String company){
         return jobService.findByCompany(company);
     }
+
+    @GetMapping("/jobs/sort/title")
+    public List<Jobs> sortByTitle(){
+        return jobService.sortByTitle();
+    }
+
+    @GetMapping("/jobs/sort/location")
+    public List<Jobs> sortByLocation(){
+        return jobService.sortByLocation();
+    }
+
+    @GetMapping("/jobs/sort/company")
+    public List<Jobs> sortByCompany(){
+        return jobService.sortByCompany();
+    }
+
+    @GetMapping("/jobs/sort/salary")
+    public  List<Jobs> sortBySalary(){
+        return jobService.sortBySalary();
+    }
+
+    @GetMapping("/jobs/count")
+    public long getJobCount(){
+        return jobService.getJobCount();
+    }
+
+    @GetMapping("/jobs/filter")
+    public List<Jobs> filterJobs(
+            @RequestParam (required = false) String location,
+            @RequestParam(required = false) String skill,
+            @RequestParam(required = false) Integer salary,
+            @RequestParam(required = false) String company,
+            @RequestParam(defaultValue = "id") String sortBy
+    ){
+        return jobService.filterJobs(location,skill,salary,company,sortBy);
+    }
+
+    //For getting all the options in the filter dropdown
+
+    @GetMapping("/jobs/locations")
+    public List<String> getLocations(){
+        return jobService.getLocations();
+    }
+
+    @GetMapping("/jobs/companies")
+    public List<String> getCompanies(){
+        return jobService.getCompanies();
+    }
+
+    @GetMapping("/jobs/skills")
+    public List<String> getSkills(){
+        return jobService.getSkills();
+    }
+
+
 }

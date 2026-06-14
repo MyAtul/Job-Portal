@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class JobService {
@@ -23,35 +25,30 @@ public class JobService {
     }
 
     public List<Jobs> getJobs() {
-        return  repo.findAll();
+        return repo.findAll();
     }
-
 
 
     public Jobs updateJob(Integer id, Jobs job) {
         Jobs existingJob = repo.findById(id)
-                .orElseThrow(()->
-                new JobNotFoundException(
-                        "Job with id " + id + " not found"
-                ));
+                .orElseThrow(() ->
+                        new JobNotFoundException(
+                                "Job with id " + id + " not found"
+                        ));
+        existingJob.setTitle(job.getTitle());
+        existingJob.setCompany(job.getCompany());
+        existingJob.setLocation(job.getLocation());
+        existingJob.setSkills(job.getSkills());
+        existingJob.setSalary(job.getSalary());
+        existingJob.setDescription(job.getDescription());
+        existingJob.setImgUrl(job.getImgUrl());
 
-        if(existingJob != null){
-            existingJob.setTitle(job.getTitle());
-            existingJob.setCompany(job.getCompany());
-            existingJob.setLocation(job.getLocation());
-            existingJob.setSkills(job.getSkills());
-            existingJob.setSalary(job.getSalary());
-            existingJob.setDescription(job.getDescription());
-            existingJob.setImgUrl(job.getImgUrl());
-
-            return repo.save(existingJob);
-        }
-        return null;
+        return repo.save(existingJob);
     }
 
     public String deleteJob(Integer id) {
         Jobs job = repo.findById(id)
-                        .orElseThrow(()->
+                .orElseThrow(() ->
                         new JobNotFoundException(
                                 "Job with id " + id + " not found"
                         ));
@@ -69,11 +66,6 @@ public class JobService {
         return repo.findByTitleContainingIgnoreCase(keyword);
     }
 
-    public Page<Jobs> getJobWithPagination(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return repo.findAll(pageable);
-    }
-
     public List<Jobs> findByLocation(String location) {
         return repo.findByLocationContainingIgnoreCase(location);
     }
@@ -82,11 +74,133 @@ public class JobService {
         return repo.findBySkillsContainingIgnoreCase(skill);
     }
 
-    public List<Jobs> findBySalary(String salary) {
-        return repo.findBySalaryContainingIgnoreCase(salary);
+    public List<Jobs> findBySalary(Integer salary) {
+        return repo.findBySalaryGreaterThanEqual(salary);
     }
 
     public List<Jobs> findByCompany(String company) {
         return repo.findByCompanyContainingIgnoreCase(company);
     }
+
+    public List<Jobs> sortByTitle() {
+        return repo.findAll(Sort.by("title"));
+    }
+
+    public List<Jobs> sortByLocation() {
+        return repo.findAll(Sort.by("location"));
+    }
+
+    public List<Jobs> sortByCompany() {
+        return repo.findAll(Sort.by("company"));
+    }
+
+    public List<Jobs> sortBySalary() {
+        return repo.findAll(Sort.by("salary"));
+    }
+
+    public Page<Jobs> getJobWithPagination(int page, int size, String sortBy) {
+
+        List<String> validField = List.of(
+                "id",
+                "title",
+                "company",
+                "salary",
+                "location"
+        );
+
+        if (!validField.contains(sortBy)) {
+            throw new IllegalArgumentException(
+                    "Invalid sort Filed " + sortBy
+            );
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return repo.findAll(pageable);
+    }
+
+    public long getJobCount() {
+        return repo.count();
+    }
+
+    public List<Jobs> filterJobs(String location, String skill, Integer salary, String company, String sortBy) {
+        List<Jobs> jobs = repo.findAll();
+
+        if (location != null && !location.isBlank()) {
+            jobs = jobs.stream()
+                    .filter(job ->
+                            job.getLocation() != null &&
+                                    job.getLocation()
+                                            .toLowerCase().contains(location.toLowerCase())).
+                    toList();
+        }
+
+        if (skill != null && !skill.isBlank()) {
+            jobs = jobs.stream()
+                    .filter(job ->
+                            job.getSkills() != null &&
+                                    job.getSkills()
+                                            .toLowerCase().contains(skill.toLowerCase()))
+                    .toList();
+        }
+
+        if (salary != null) {
+            jobs = jobs.stream()
+                    .filter(job -> job.getSalary() >= salary)
+                    .toList();
+        }
+
+        if (company != null && !company.isBlank()) {
+            jobs = jobs.stream()
+                    .filter(job ->
+                            job.getCompany() != null &&
+                                    job.getCompany().toLowerCase()
+                                            .contains(company.toLowerCase()))
+                    .toList();
+        }
+
+        switch (sortBy) {
+            case "title" -> jobs = jobs.stream()
+                    .sorted(Comparator.comparing(Jobs::getTitle))
+                    .toList();
+
+            case "location" -> jobs = jobs.stream()
+                    .sorted(Comparator.comparing(Jobs::getLocation))
+                    .toList();
+
+            case "company" -> jobs = jobs.stream()
+                    .sorted(Comparator.comparing(Jobs::getCompany))
+                    .toList();
+        }
+        return jobs;
+    }
+
+    public List<String> getLocations() {
+        return repo.findAll()
+                .stream()
+                .map(Jobs::getLocation)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    public List<String> getCompanies() {
+        return repo.findAll()
+                .stream()
+                .map(Jobs::getCompany)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
+    public List<String> getSkills() {
+        return repo.findAll()
+                .stream()
+                .flatMap(job ->
+                        Arrays.stream(job.getSkills().split(",")))
+                .map(String::trim)
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
 }

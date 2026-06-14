@@ -44,7 +44,7 @@ const Card = ({ job ,handleDelete }) => {
           <div className='border-t mt-5 pt-4 border-gray-300 flex justify-between items-center'>
             <div>
               <h1 className='font-semibold text-lg text-black'>
-                ₹{job.salary}
+                ₹{job.salary} LPA
               </h1>
             </div>
 

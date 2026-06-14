@@ -1,14 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import FilterBar from '../components/FilterBar'
 
 const Navbar = ({
   keyword,
   setKeyword,
   suggestions,
-  setSuggestions
+  setSuggestions,
+  location,
+  setLocation,
+  skill,
+  setSkill,
+  company,
+  setCompany,
+  salary,
+  setSalary,
+  sortBy,
+  setSortBy,
+  locations,
+  companies,
+  skills
 }) => {
+
+  const [showFilters, setShowFilters] = useState(false)
+
   return (
-    <div className='bg-gray-800 border-b border-gray-700 p-5'>
+    <div className='bg-gray-800 border-b border-gray-700 p-5 relative'>
       <div className='flex justify-between items-center'>
 
         <Link
@@ -52,15 +69,46 @@ const Navbar = ({
           )}
 
         </div>
+        
+        <div className='flex items-center gap-3'>
 
-        <Link
-          to='/addJob'
-          className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
-        >
-          Add Job
-        </Link>
+          <Link
+            to='/addJob'
+            className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
+          >
+            Add Job
+          </Link>
 
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className='bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600'
+          >
+            Filters
+          </button>
+
+        </div>
       </div>
+      {
+        showFilters && (
+          <div className='absolute right-5 top-20 z-50'>
+            <FilterBar 
+            location={location}
+            setLocation={setLocation}
+            skill={skill}
+            setSkill={setSkill}
+            salary={salary}
+            setSalary={setSalary}
+            company={company}
+            setCompany={setCompany}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            locations={locations}
+            companies={companies}
+            skills={skills}
+            />
+          </div>
+        )
+      }
     </div>
   )
 }
