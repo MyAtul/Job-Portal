@@ -217,7 +217,7 @@ npm run dev
 
 ---
 
-# 👨 Author
+#  Author
 
 **Atul Yadav**
 
