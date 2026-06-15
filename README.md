@@ -1,142 +1,231 @@
-# Job Portal
+#  Job Portal
 
-A full-stack Job Portal application built with React, Spring Boot, and MySQL. The application allows administrators to manage job listings through a clean and responsive interface.
+A full-stack Job Portal application built using **React**, **Spring Boot**, **Spring Security**, **JWT Authentication**, and **MySQL**.
 
-## Tech Stack
+This project allows users to browse job listings while providing secure role-based access for administrators to manage job postings.
 
-### Frontend
+---
 
-* React.js
+# Screenshots
+
+## Home Page
+
+![Home Page](screenshot/home.png)
+
+---
+
+## Login Page
+
+![Login Page](screenshot/login.png)
+
+---
+
+## Registration Page
+
+![Registration Page](screenshot/register.png)
+
+---
+
+## Admin Dashboard
+
+![Admin Dashboard](screenshot/home_after_admin_login.png)
+
+---
+
+## User Dashboard
+
+![User Dashboard](screenshot/home_after_user_login.png)
+
+## Job Detail Page
+
+![User Dashboard](screenshot/detailpage.png)
+
+#  Features
+
+## Job Management
+
+* View Job Listings
+* Search Jobs
+* Filter Jobs
+* Pagination
+* Sorting
+* Responsive UI
+
+## Authentication
+
+* User Registration
+* User Login
+* JWT Authentication
+* Secure Logout
+* Password Encryption using BCrypt
+
+## Authorization
+
+### USER
+
+* View Jobs
+* Search Jobs
+* Filter Jobs
+
+### ADMIN
+
+* Add Jobs
+* Edit Jobs
+* Delete Jobs
+* Full Job Management Access
+
+## Security
+
+* Spring Security
+* JWT Token Validation
+* Role-Based Access Control
+* Protected Routes
+* Axios Interceptor
+* CORS Configuration
+
+---
+
+# Tech Stack
+
+## Frontend
+
+* React
 * React Router DOM
 * Axios
 * Tailwind CSS
 * React Toastify
 
-### Backend
+## Backend
 
 * Spring Boot
+* Spring Security
 * Spring Data JPA
-* Hibernate
+* JWT (JSON Web Token)
+* Maven
 
-### Database
+## Database
 
 * MySQL
 
 ---
 
-## Features
-
-### Job Management
-
-* Add Job
-* Edit Job
-* Delete Job
-* View Job Details
-* View All Jobs
-
-### Search & Filtering
-
-* Search Jobs by Title
-* Debounced Search
-* Search Suggestions
-* Filter by Location
-* Filter by Skills
-* Filter by Company
-* Filter by Salary Range
-* Dynamic Filter Options
-
-### Sorting & Pagination
-
-* Pagination
-* Sort by Title
-* Sort by Company
-* Sort by Location
-* Sort by Salary
-
-### User Experience
-
-* Responsive UI
-* Loading Spinner
-* Empty State Component
-* Toast Notifications
-* Company Logo Support
-
-### Backend Features
-
-* RESTful APIs
-* Validation using Jakarta Validation
-* Global Exception Handling
-* Custom Exceptions
-* Pagination Support
-* Dynamic Filtering
-* Dynamic Sorting
-
----
-
-## API Endpoints
-
-### Jobs
-
-* `POST /jobs` - Add Job
-* `GET /jobs` - Get All Jobs
-* `GET /jobs/{id}` - Get Job By ID
-* `PUT /jobs/{id}` - Update Job
-* `DELETE /jobs/{id}` - Delete Job
-
-### Search
-
-* `GET /jobs/search?keyword=java`
-
-### Pagination
-
-* `GET /jobs/page?page=0&size=5`
-
-### Filters
-
-* `GET /jobs/filter`
-
-Example:
-
-```http
-/jobs/filter?location=Mumbai&skill=Java&salary=10&sortBy=title
-```
-
-### Dynamic Filter Data
-
-* `GET /jobs/locations`
-* `GET /jobs/companies`
-* `GET /jobs/skills`
-
-### Statistics
-
-* `GET /jobs/count`
-
----
-
-## Project Structure
+#  Project Structure
 
 ```text
-JOB_PORTAL
+JOB_Portal
+│
+├── Frontend
+│   └── job-portal
 │
 ├── Backend
+│   └── Job_portal
 │
-└── Frontend
+├── screenshots
+│   ├── home.png
+│   ├── login.png
+│   ├── register.png
+│   └── admin-dashboard.png
+│
+└── README.md
 ```
 
 ---
 
-## Future Improvements
+# Role-Based Access
 
-* JWT Authentication
-* Role Based Access Control
-* Applicant Portal
-* Resume Upload
-* Apply Job Feature
-* Dashboard Analytics
-* Favorites / Saved Jobs
+| Feature     | Guest | User | Admin |
+| ----------- | ----- | ---- | ----- |
+| View Jobs   | yes     | yes    | yes     |
+| Search Jobs | yes     | yes    | yes     |
+| Filter Jobs | yes     | yes    | yes     |
+| Add Job     | No     | No    | yes     |
+| Edit Job    | No     | No    | yes     |
+| Delete Job  | No     | No    | yes     |
 
 ---
 
-## Author
+#  Installation
 
-Atul Yadav
+## Clone Repository
+
+```bash
+git clone https://github.com/YourUsername/Job-Portal.git
+```
+
+## Backend Setup
+
+```bash
+cd Backend/Job_portal
+```
+
+Configure MySQL database in:
+
+```properties
+application.properties
+```
+
+Run the application:
+
+```bash
+mvn spring-boot:run
+```
+
+---
+
+## Frontend Setup
+
+```bash
+cd Frontend/job-portal
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start development server:
+
+```bash
+npm run dev
+```
+
+---
+
+#  Authentication Flow
+
+1. Register a new account
+2. Login using credentials
+3. Receive JWT Token
+4. Token stored in Local Storage
+5. Axios Interceptor automatically attaches token
+6. Backend validates JWT
+7. Role-Based Authorization applied
+
+---
+
+#  Future Enhancements
+
+* Resume Upload
+* Apply for Jobs
+* Application Tracking
+* User Dashboard
+* Saved Jobs
+* Profile Management
+* Email Notifications
+* Job Analytics
+
+---
+
+# 👨 Author
+
+**Atul Yadav**
+
+Built as a learning project to practice:
+
+* React
+* Spring Boot
+* Spring Security
+* JWT Authentication
+* MySQL
+* Full-Stack Development
