@@ -12,6 +12,7 @@ import { getCompanies, getLocations, getSkills } from './services/services';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import Register from './pages/Register';
+import AdmineRoute from './components/AdmineRoute';
 
 const App = () => {
 
@@ -97,16 +98,16 @@ const App = () => {
         />
 
         <Route path='/addJob' element={
-          <ProtectedRoute>
+          <AdmineRoute >
             <AddJob />
-          </ProtectedRoute> 
+          </AdmineRoute>
         }
         />
 
         <Route path='/editJob/:id' element={
-          <ProtectedRoute>
+          <AdmineRoute>
             <Edit />
-          </ProtectedRoute> 
+          </AdmineRoute>
         }
         />
 

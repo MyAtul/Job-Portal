@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom"
+import { getRole } from "../utils/auth"
 
 const Card = ({ job ,handleDelete }) => {
+
+  const role = getRole()
+
   return (
     <div className='p-4'>
       <div className='bg-white rounded-xl w-80 shadow-md hover:shadow-lg transition-all duration-300'>
@@ -57,21 +61,25 @@ const Card = ({ job ,handleDelete }) => {
                 Apply
               </Link>
 
-              <Link
-                to={`/editJob/${job.id}`}
-                className='bg-blue-500 text-white rounded-xl py-2 px-3 hover:bg-blue-600 transition'
-              >
-                Edit
-              </Link>
+              { role === 'ADMIN' && (
+                <>
+                  <Link
+                    to={`/editJob/${job.id}`}
+                    className='bg-blue-500 text-white rounded-xl py-2 px-3 hover:bg-blue-600 transition'
+                  >
+                    Edit
+                  </Link>
 
-              <button
-                onClick={()=>{
-                  handleDelete(job.id)
-                }}
-                className='bg-red-500 text-white rounded-xl py-2 px-3 hover:bg-red-600 transition'
-              >
-                Delete
-              </button>
+                  <button
+                    onClick={()=>{
+                      handleDelete(job.id)
+                    }}
+                    className='bg-red-500 text-white rounded-xl py-2 px-3 hover:bg-red-600 transition'
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
 
             </div>
             

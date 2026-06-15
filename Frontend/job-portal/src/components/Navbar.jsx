@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import FilterBar from '../components/FilterBar'
+import { getRole } from '../utils/auth'
 
 const Navbar = ({
   keyword,
@@ -26,6 +27,8 @@ const Navbar = ({
   const [showFilters, setShowFilters] = useState(false)
 
   const isLoggedIn = localStorage.getItem("token")
+
+  const role = getRole()
 
   return (
     <div className='bg-gray-800 border-b border-gray-700 p-5 relative'>
@@ -79,12 +82,15 @@ const Navbar = ({
           {
             isLoggedIn?<div>
             <div className='flex items-center gap-3'>
-              <Link
-                to='/addJob'
-                className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
-              >
-                Add Job
-              </Link>
+              { role === 'ADMIN' && (
+                <Link
+                  to='/addJob'
+                  className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
+                >
+                  Add Job
+                </Link>
+              ) }
+              
               
               <button
                 onClick={handleLogout}

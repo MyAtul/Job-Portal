@@ -23,7 +23,7 @@ public class UserService {
 
     public User register(User user){
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRole("admin");
+        user.setRole("USER");
         return userRepo.save(user);
     }
 
@@ -42,7 +42,8 @@ public class UserService {
         }
 
         String token = jwtUtil.generateToken(
-                user.getUsername()
+                user.getUsername(),
+                user.getRole()
         );
 
         return new AuthResponse(token);
