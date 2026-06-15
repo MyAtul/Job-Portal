@@ -29,21 +29,40 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain
     ) throws ServletException, IOException
     {
-        String header = request.getHeader("Authorization");
-        if(header != null && header.startsWith("Bearer ")){
-            String token = header.substring(7);
-            String username = jwtUtil.extractUsername(token);
-            UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
-            if(jwtUtil.validateToken(token,username)){
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,null,userDetails.getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
-                System.out.println("Authenticated User : "+username);
-            }
+        System.out.println("JwtFilter Executed");
+        String path = request.getRequestURI();
+        if(path.startsWith("/auth")){
+            filterChain.doFilter(request,response);
+            return;
         }
-        filterChain.doFilter(request,response);
+        String header = request.getHeader("Authorization");
+        System.out.println("Header = " + header);
+        if(header != null &&
+                header.startsWith("Bearer ")) {
+            try {
+                String token = header.substring(7);
+                System.out.println("token : "+token);
+
+                String username = jwtUtil.extractUsername(token);
+                System.out.println("username "+username);
+
+                UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
+
+                if (jwtUtil.validateToken(token, username)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities());
+
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+
+                    System.out.println("Authenticated User : " + username);
+                }
+            }
+            catch (Exception e){
+                logger.warn("Invalid token ",e);
+            }
+
+        }
+        filterChain.doFilter(request, response);
     }
 }

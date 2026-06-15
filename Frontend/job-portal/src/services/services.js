@@ -3,60 +3,80 @@ import App from '../App'
 
 const API_URL = "http://localhost:8080"
 
+const api = axios.create({
+    baseURL:API_URL
+})
+
+api.interceptors.request.use((config)=>{
+
+    const token = localStorage.getItem("token")
+
+    if(token){
+
+        console.log(
+            "seding Headre:",
+            `Bearer ${token}`
+        )
+        config.headers.Authorization = `Bearer ${token}`
+    }
+
+    return config
+})
+
 export const getJobs =  () =>{
-    return axios.get(`${API_URL}/jobs`)
+    return api.get(`${API_URL}/jobs`)
 }
 
 export const addJob = (job) =>{
-    return axios.post(`${API_URL}/jobs`,job)
+    return api.post(`${API_URL}/jobs`,job)
 }
 
 export const updateJob = (id,job) =>{
-    return axios.put(`${API_URL}/jobs/${id}`,job)
+    return api.put(`${API_URL}/jobs/${id}`,job)
 }
 
 export const deleteJob = (id) =>{
-    return axios.delete(`${API_URL}/jobs/${id}`)
+    return api.delete(`${API_URL}/jobs/${id}`)
 }
 
 export const getJobById = (id) =>{
-    return axios.get(`${API_URL}/jobs/${id}`)
+    return api.get(`${API_URL}/jobs/${id}`)
 }
 
 export const searchJobs = (keyword) =>{
-    return axios.get(`${API_URL}/jobs/search?keyword=${keyword}`)
+    return api.get(`${API_URL}/jobs/search?keyword=${keyword}`)
 }
 
 export const getJobByPage = (page,size) =>{
-    return axios.get(`${API_URL}/jobs/page?page=${page}&size=${size}`)
+    return api.get(`${API_URL}/jobs/page?page=${page}&size=${size}`)
 }
 
 export const getJobsByLocation = (location) =>{
-    return axios.get(`${API_URL}/jobs/location?location=${location}`)
+    return api.get(`${API_URL}/jobs/location?location=${location}`)
 }
 
 export const getJobsBySkill = (skill) =>{
-    return axios.get(`${API_URL}/jobs/skill?skill=${skill}`)
+    return api.get(`${API_URL}/jobs/skill?skill=${skill}`)
 }
 
 export const getJobsBySalary = (salary) =>{
-    return axios.get(`${API_URL}/jobs/salary?salary=${salary}`)
+    return api.get(`${API_URL}/jobs/salary?salary=${salary}`)
 }
 
 export const getJobsByCompany = (company) =>{
-    return axios.get(`${API_URL}/jobs/company?company=${company}`)
+    return api.get(`${API_URL}/jobs/company?company=${company}`)
 }
 
 export const getJobsSorted = (page,size,sortBy) =>{
-    return axios.get(`${API_URL}/jobs/page?page=${page}&size=${size}&sortBy=${sortBy}`)
+    return api.get(`${API_URL}/jobs/page?page=${page}&size=${size}&sortBy=${sortBy}`)
 }
 
 export const getJobscount = () =>{
-    return axios.get(`${API_URL}/jobs/count`)
+    return api.get(`${API_URL}/jobs/count`)
 }
 
 export const getFilterJobs = (location,skill,company,salary,sortBy)=>{
-    return axios.get(`${API_URL}/jobs/filter`,
+    return api.get(`${API_URL}/jobs/filter`,
         {
             params:{
                 location,
@@ -71,13 +91,17 @@ export const getFilterJobs = (location,skill,company,salary,sortBy)=>{
 }
 
 export const getLocations = ()=>{
-    return axios.get(`${API_URL}/jobs/locations`)
+    return api.get(`${API_URL}/jobs/locations`)
 }
 
 export const getCompanies = ()=>{
-    return axios.get(`${API_URL}/jobs/companies`)
+    return api.get(`${API_URL}/jobs/companies`)
 }
 
 export const getSkills = ()=>{
-    return axios.get(`${API_URL}/jobs/skills`)
+    return api.get(`${API_URL}/jobs/skills`)
+}
+
+export const loginUser = (user) =>{
+    return axios.post(`${API_URL}/auth/login`,user)
 }

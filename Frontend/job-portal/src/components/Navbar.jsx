@@ -79,6 +79,13 @@ const Navbar = ({
             Add Job
           </Link>
 
+          <Link 
+            to='/login'
+            className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
+          >
+            Login
+          </Link>
+
           <button
             onClick={() => setShowFilters(!showFilters)}
             className='bg-slate-700 px-4 py-2 rounded-lg hover:bg-slate-600'

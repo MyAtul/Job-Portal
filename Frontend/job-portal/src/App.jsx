@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 import JobDetails from './pages/JobDetails';
 import { getCompanies, getLocations, getSkills } from './services/services';
+import Login from './pages/Login';
 
 const App = () => {
 
@@ -87,6 +88,7 @@ const App = () => {
         <Route path='/addJob' element={<AddJob />}/>
         <Route path='/editJob/:id' element={<Edit />}/>
         <Route path='jobdetail/:id' element={<JobDetails />}/>
+        <Route path='/login' element={<Login />}/>
       </Routes>
 
       <ToastContainer
