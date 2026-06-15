@@ -19,10 +19,13 @@ const Navbar = ({
   setSortBy,
   locations,
   companies,
-  skills
+  skills,
+  handleLogout
 }) => {
 
   const [showFilters, setShowFilters] = useState(false)
+
+  const isLoggedIn = localStorage.getItem("token")
 
   return (
     <div className='bg-gray-800 border-b border-gray-700 p-5 relative'>
@@ -69,22 +72,46 @@ const Navbar = ({
           )}
 
         </div>
+
         
         <div className='flex items-center gap-3'>
 
-          <Link
-            to='/addJob'
-            className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
-          >
-            Add Job
-          </Link>
+          {
+            isLoggedIn?<div>
+            <div className='flex items-center gap-3'>
+              <Link
+                to='/addJob'
+                className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
+              >
+                Add Job
+              </Link>
+              
+              <button
+                onClick={handleLogout}
+                className='bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition'
+              >
+                Log Out
+              </button>
+            </div> 
+            </div> : <>
+            <Link 
+              to='/login'
+              className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
+            >
+              Login
+            </Link>
 
-          <Link 
-            to='/login'
-            className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
-          >
-            Login
-          </Link>
+            <Link 
+              to='/register'
+              className='bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition'
+            >
+              Register
+            </Link>
+            
+            </>
+          
+
+          }
 
           <button
             onClick={() => setShowFilters(!showFilters)}

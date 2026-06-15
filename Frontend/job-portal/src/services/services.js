@@ -105,3 +105,7 @@ export const getSkills = ()=>{
 export const loginUser = (user) =>{
     return axios.post(`${API_URL}/auth/login`,user)
 }
+
+export const registerUser = (user)=>{
+    return axios.post(`${API_URL}/auth/register`,user)
+}

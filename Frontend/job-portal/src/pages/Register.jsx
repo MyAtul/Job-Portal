@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { loginUser } from '../services/services'
+import { loginUser, registerUser } from '../services/services'
 import { toast } from 'react-toastify'
 
-const Login = () => {
+const Register = () => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -14,22 +14,20 @@ const Login = () => {
         e.preventDefault()
 
         try{
-            const response = await loginUser({
+
+            await registerUser({
                 username,
                 password
             })
 
-            localStorage.setItem("token",response.data.token)
-
-            toast.success("Login Successfull")
-            navigate("/")
+            toast.success("Registeration Complete")
+            navigate("/login")
         }catch(error){
 
-            toast.error("Invalid Username or Password")
+            toast.error("Registeration Failed")
             console.log(error)
         }
     }
-
 
   return (
     <div className='min-h-screen flex items-center justify-center'>
@@ -40,7 +38,7 @@ const Login = () => {
         >
 
             <h1 className='text-2xl font-bold mb-6 text-center text-black'>
-                Login
+                User Registeration
             </h1>
 
             <input
@@ -64,15 +62,26 @@ const Login = () => {
                 type='submit'
                 className=' bg-green-500 py-3 rounded w-36 hover:bg-green-600 active:scale-95'
             >
-                Login
+                Register
             </button>
+
+            
             </div>
             
-
+            <p className='text-center text-black mt-4'>
+                Already have an account?{" "}
+                <span
+                    onClick={() => navigate("/login")}
+                    className='text-blue-600 cursor-pointer'
+                >
+                    Login
+                </span>
+            </p>
         </form>
+
 
     </div>
   )
 }
 
-export default Login
+export default Register

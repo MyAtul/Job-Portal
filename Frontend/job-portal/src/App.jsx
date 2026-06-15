@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Home from './pages/Home'
 import Card from './components/Card'
-import { Routes,Route } from "react-router-dom";
+import { Routes,Route, useNavigate } from "react-router-dom";
 import Edit from './pages/Edit';
 import Navbar from './components/Navbar';
 import AddJob from './pages/AddJob';
@@ -10,8 +10,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import JobDetails from './pages/JobDetails';
 import { getCompanies, getLocations, getSkills } from './services/services';
 import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import Register from './pages/Register';
 
 const App = () => {
+
+  const navigate = useNavigate()
 
   const [keyword, setKeyword] = useState('')
   const [suggestions, setSuggestions] = useState([])
@@ -49,6 +53,12 @@ const App = () => {
 
   },[])
 
+  const handleLogout = ()=>{
+    localStorage.removeItem("token")
+    navigate("/login")
+  }
+
+
   return (
     <div className='bg-black text-white min-h-screen min-w-screen'>
       <Navbar 
@@ -69,6 +79,7 @@ const App = () => {
       locations={locations}
       companies={companies}
       skills={skills}
+      handleLogout={handleLogout}
       />
       <Routes>
         <Route path='/' element={
@@ -84,11 +95,24 @@ const App = () => {
           />
           }
         />
-        <Route path='/editJob' element={<Edit />}/>
-        <Route path='/addJob' element={<AddJob />}/>
-        <Route path='/editJob/:id' element={<Edit />}/>
+
+        <Route path='/addJob' element={
+          <ProtectedRoute>
+            <AddJob />
+          </ProtectedRoute> 
+        }
+        />
+
+        <Route path='/editJob/:id' element={
+          <ProtectedRoute>
+            <Edit />
+          </ProtectedRoute> 
+        }
+        />
+
         <Route path='jobdetail/:id' element={<JobDetails />}/>
         <Route path='/login' element={<Login />}/>
+        <Route path='/register' element={<Register />}></Route>
       </Routes>
 
       <ToastContainer
