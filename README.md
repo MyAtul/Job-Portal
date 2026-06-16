@@ -1,8 +1,14 @@
-#  Job Portal
+# Job Portal
 
-A full-stack Job Portal application built using **React**, **Spring Boot**, **Spring Security**, **JWT Authentication**, and **MySQL**.
+A full-stack Job Portal application built using React, Spring Boot, Spring Security, JWT Authentication, and MySQL.
 
-This project allows users to browse job listings while providing secure role-based access for administrators to manage job postings.
+The application allows users to browse job listings, search and filter jobs, and view detailed job information. Administrators can securely manage job postings through role-based access control.
+
+## Live Demo
+
+Frontend: https://job-portal-coral-ten.vercel.app
+
+Backend: https://job-portal-backend-2913.onrender.com
 
 ---
 
@@ -36,20 +42,30 @@ This project allows users to browse job listings while providing secure role-bas
 
 ![User Dashboard](screenshot/home_after_user_login.png)
 
+---
+
 ## Job Detail Page
 
-![User Dashboard](screenshot/detailpage.png)
+![Job Detail Page](screenshot/detailpage.png)
 
-#  Features
+---
+
+# Features
 
 ## Job Management
 
 * View Job Listings
-* Search Jobs
-* Filter Jobs
+* View Job Details
+* Search Jobs by Keyword
+* Filter Jobs by:
+
+  * Location
+  * Skill
+  * Company
+  * Salary
 * Pagination
 * Sorting
-* Responsive UI
+* Responsive User Interface
 
 ## Authentication
 
@@ -61,13 +77,21 @@ This project allows users to browse job listings while providing secure role-bas
 
 ## Authorization
 
-### USER
+### Guest
 
 * View Jobs
 * Search Jobs
 * Filter Jobs
+* View Job Details
 
-### ADMIN
+### User
+
+* View Jobs
+* Search Jobs
+* Filter Jobs
+* View Job Details
+
+### Admin
 
 * Add Jobs
 * Edit Jobs
@@ -79,9 +103,9 @@ This project allows users to browse job listings while providing secure role-bas
 * Spring Security
 * JWT Token Validation
 * Role-Based Access Control
-* Protected Routes
-* Axios Interceptor
-* CORS Configuration
+* Route Protection
+* Axios Request Interceptor
+* Global CORS Configuration
 
 ---
 
@@ -106,25 +130,51 @@ This project allows users to browse job listings while providing secure role-bas
 ## Database
 
 * MySQL
+* Aiven Cloud MySQL
+
+## Deployment
+
+### Frontend
+
+* Vercel
+
+### Backend
+
+* Render
+* Docker
+
+### Database
+
+* Aiven
 
 ---
 
-#  Project Structure
+# Project Structure
 
 ```text
 JOB_Portal
 │
-├── Frontend
-│   └── job-portal
-│
 ├── Backend
 │   └── Job_portal
+│       ├── src
+│       ├── pom.xml
+│       ├── Dockerfile
+│       └── mvnw
+│
+├── Frontend
+│   └── job-portal
+│       ├── src
+│       ├── public
+│       ├── package.json
+│       └── vite.config.js
 │
 ├── screenshots
 │   ├── home.png
 │   ├── login.png
 │   ├── register.png
-│   └── admin-dashboard.png
+│   ├── home_after_admin_login.png
+│   ├── home_after_user_login.png
+│   └── detailpage.png
 │
 └── README.md
 ```
@@ -133,38 +183,58 @@ JOB_Portal
 
 # Role-Based Access
 
-| Feature     | Guest | User | Admin |
-| ----------- | ----- | ---- | ----- |
-| View Jobs   | yes     | yes    | yes     |
-| Search Jobs | yes     | yes    | yes     |
-| Filter Jobs | yes     | yes    | yes     |
-| Add Job     | No     | No    | yes     |
-| Edit Job    | No     | No    | yes     |
-| Delete Job  | No     | No    | yes     |
+| Feature          | Guest | User | Admin |
+| ---------------- | ----- | ---- | ----- |
+| View Jobs        | Yes   | Yes  | Yes   |
+| Search Jobs      | Yes   | Yes  | Yes   |
+| Filter Jobs      | Yes   | Yes  | Yes   |
+| View Job Details | Yes   | Yes  | Yes   |
+| Add Job          | No    | No   | Yes   |
+| Edit Job         | No    | No   | Yes   |
+| Delete Job       | No    | No   | Yes   |
 
 ---
 
-#  Installation
+# Installation
 
 ## Clone Repository
 
 ```bash
-git clone https://github.com/YourUsername/Job-Portal.git
+git clone https://github.com/MyAtul/Job-Portal.git
+cd Job-Portal
 ```
 
+---
+
 ## Backend Setup
+
+Navigate to the backend directory:
 
 ```bash
 cd Backend/Job_portal
 ```
 
-Configure MySQL database in:
+Configure the database connection in:
 
 ```properties
 application.properties
 ```
 
+Example:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/jobportal
+spring.datasource.username=root
+spring.datasource.password=your_password
+```
+
 Run the application:
+
+```bash
+./mvnw spring-boot:run
+```
+
+or
 
 ```bash
 mvn spring-boot:run
@@ -173,6 +243,8 @@ mvn spring-boot:run
 ---
 
 ## Frontend Setup
+
+Navigate to the frontend directory:
 
 ```bash
 cd Frontend/job-portal
@@ -184,48 +256,114 @@ Install dependencies:
 npm install
 ```
 
-Start development server:
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
----
+Frontend runs on:
 
-#  Authentication Flow
-
-1. Register a new account
-2. Login using credentials
-3. Receive JWT Token
-4. Token stored in Local Storage
-5. Axios Interceptor automatically attaches token
-6. Backend validates JWT
-7. Role-Based Authorization applied
+```text
+http://localhost:5173
+```
 
 ---
 
-#  Future Enhancements
+# Authentication Flow
+
+1. User registers an account.
+2. User logs in using credentials.
+3. Backend validates credentials.
+4. JWT token is generated.
+5. Token is stored in Local Storage.
+6. Axios Interceptor automatically attaches the token to requests.
+7. Spring Security validates the token.
+8. Role-based authorization is applied.
+
+---
+
+# API Endpoints
+
+## Authentication
+
+```http
+POST /auth/register
+POST /auth/login
+```
+
+## Jobs
+
+```http
+GET    /jobs
+GET    /jobs/{id}
+POST   /jobs
+PUT    /jobs/{id}
+DELETE /jobs/{id}
+```
+
+## Search & Filters
+
+```http
+GET /jobs/search
+GET /jobs/filter
+GET /jobs/location
+GET /jobs/company
+GET /jobs/skill
+GET /jobs/salary
+```
+
+## Pagination & Sorting
+
+```http
+GET /jobs/page
+GET /jobs/count
+```
+
+---
+
+# Deployment Architecture
+
+```text
+Frontend (Vercel)
+        │
+        ▼
+Backend (Render + Docker)
+        │
+        ▼
+Database (Aiven MySQL)
+```
+
+---
+
+# Future Enhancements
 
 * Resume Upload
 * Apply for Jobs
-* Application Tracking
-* User Dashboard
+* Application Tracking System
+* User Profiles
 * Saved Jobs
-* Profile Management
+* Admin Dashboard Analytics
 * Email Notifications
-* Job Analytics
+* Job Recommendations
+* Resume Parsing
+* Cloud Storage Integration
 
 ---
 
-#  Author
+# Author
 
-**Atul Yadav**
+Atul Yadav
 
-Built as a learning project to practice:
+Built to practice and demonstrate:
 
 * React
 * Spring Boot
 * Spring Security
 * JWT Authentication
 * MySQL
+* REST APIs
+* Docker
+* Cloud Deployment
 * Full-Stack Development
+* Role-Based Access Control
