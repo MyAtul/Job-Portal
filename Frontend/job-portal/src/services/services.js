@@ -1,7 +1,7 @@
 import axios from 'axios'
 import App from '../App'
 
-const API_URL = "http://localhost:8080"
+const API_URL = "https://job-portal-backend-2913.onrender.com"
 
 const api = axios.create({
     baseURL:API_URL
