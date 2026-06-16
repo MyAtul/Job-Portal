@@ -10,7 +10,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "mysecretkeymysecretkeymysecretkeymysecretkey";
+    private static final String SECRET = "mysecretusefortheencryptionanddecryption";
 
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
     public String generateToken(String username,String role) {
