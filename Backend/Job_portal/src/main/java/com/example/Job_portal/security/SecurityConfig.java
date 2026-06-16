@@ -30,7 +30,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173"));
+                List.of("http://localhost:5173",
+                        "https://job-portal-coral-ten.vercel.app/"));
 
         configuration.setAllowedMethods(
                 List.of("GET","POST","PUT","DELETE","OPTIONS"));
